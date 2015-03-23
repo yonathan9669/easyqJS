@@ -17,13 +17,8 @@ if(options.sourceFile) {
 
     var settings = JSON.parse(fs.readFileSync(options.sourceFile));
 
-    var response_head = {'Content-Type': 'application/json'};
-    if (settings.CORS.allow_remote)
-        response_head['Access-Control-Allow-Origin'] = settings.CORS.routes;
-
     if (process.env.VERBOSE) {
         console.log(settings);
-        console.log(response_head);
     }
 
 //Own Modules
@@ -39,6 +34,15 @@ if(options.sourceFile) {
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+    app.use(function (req, res, next) {
+        res.header('Content-Type', 'application/json');
+        if (settings.CORS.allow_remote) {
+            res.header("Access-Control-Allow-Origin", settings.CORS.routes);
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        }
+        next();
+    });
 
     app.get('/', function (request, response) {
         getCalls++;
@@ -79,7 +83,6 @@ if(options.sourceFile) {
                     response.end(result);
                 }
             } else {
-                response.writeHead(200, response_head);
                 response.end(result);
             }
         });

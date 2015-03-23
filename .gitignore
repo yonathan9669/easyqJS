@@ -26,3 +26,9 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+# User files
+services.json
+
+# WebStorm IDE
+.idea

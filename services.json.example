@@ -1,0 +1,51 @@
+{
+  "url": "www.example.com", // Not Working yet
+  "port": 9001,
+  "CORS": {
+    "allow_remote": true,
+    "routes": "http://localhost:8000" // * for all
+  },
+  "services": [
+    {
+      "name": "All", // This is the name you should use for requests EXAMPLE : if you want to execute this query and get the response in a JSON just use http://<your_ip>:<your_port>/All
+      "description": "",
+      "sql": "SELECT * FROM <Table>",
+      "params": []
+    },
+    {
+      "name": "Type_LastMonth_Avg", // EXAMPLE: http://<your_ip>:<your_port>/Type_LastMonth_Avg
+      "description": "",
+      "sql": "SELECT prom_lastMonth(?) as average", // This is a mysql function execution
+      "params": [
+        {
+          "name": "type",
+          "type": "integer",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "Type_Month_Avg", // EXAMPLE: http://<your_ip>:<your_port>/Type_Month_Avg
+      "description": "",
+      "sql": "SELECT prom_month(?, ?) as average", // This is a mysql function call
+      "params": [
+        {
+          "name": "month",
+          "type": "date",
+          "description": "date in format 'YYYY-MM-DD'"
+        },
+        {
+          "name": "type",
+          "type": "integer",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "db": { // Here you can put all your mysql params [node-mysql]
+    "host": "localhost",
+    "user": "user",
+    "password": "password",
+    "database": "database_name"
+  }
+}
